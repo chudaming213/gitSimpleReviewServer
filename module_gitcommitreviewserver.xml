@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_gitcommitreviewserver" default="compile.module.gitcommitreviewserver">
+  <dirname property="module.gitcommitreviewserver.basedir" file="${ant.file.module_gitcommitreviewserver}"/>
+  
+  <property name="module.jdk.home.gitcommitreviewserver" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.gitcommitreviewserver" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.gitcommitreviewserver" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.gitcommitreviewserver" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+  
+  <property name="gitcommitreviewserver.output.dir" value="${module.gitcommitreviewserver.basedir}/out/production/gitCommitReviewServer"/>
+  <property name="gitcommitreviewserver.testoutput.dir" value="${module.gitcommitreviewserver.basedir}/out/test/gitCommitReviewServer"/>
+  
+  <path id="gitcommitreviewserver.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="gitcommitreviewserver.module.production.classpath">
+    <path refid="${module.jdk.classpath.gitcommitreviewserver}"/>
+    <path refid="library.tomcat_7.0.75.classpath"/>
+    <path refid="library.sqlite-jdbc-3.23.1.classpath"/>
+    <path refid="library.gson-2.2.2.classpath"/>
+  </path>
+  
+  <path id="gitcommitreviewserver.runtime.production.module.classpath">
+    <pathelement location="${gitcommitreviewserver.output.dir}"/>
+    <path refid="library.sqlite-jdbc-3.23.1.classpath"/>
+    <path refid="library.gson-2.2.2.classpath"/>
+  </path>
+  
+  <path id="gitcommitreviewserver.module.classpath">
+    <path refid="${module.jdk.classpath.gitcommitreviewserver}"/>
+    <pathelement location="${gitcommitreviewserver.output.dir}"/>
+    <path refid="library.tomcat_7.0.75.classpath"/>
+    <path refid="library.sqlite-jdbc-3.23.1.classpath"/>
+    <path refid="library.gson-2.2.2.classpath"/>
+  </path>
+  
+  <path id="gitcommitreviewserver.runtime.module.classpath">
+    <pathelement location="${gitcommitreviewserver.testoutput.dir}"/>
+    <pathelement location="${gitcommitreviewserver.output.dir}"/>
+    <path refid="library.tomcat_7.0.75.classpath"/>
+    <path refid="library.sqlite-jdbc-3.23.1.classpath"/>
+    <path refid="library.gson-2.2.2.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.gitcommitreviewserver">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.gitcommitreviewserver">
+    <patternset refid="excluded.from.module.gitcommitreviewserver"/>
+  </patternset>
+  
+  <path id="gitcommitreviewserver.module.sourcepath">
+    <dirset dir="${module.gitcommitreviewserver.basedir}">
+      <include name="src"/>
+      <include name="lib"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.gitcommitreviewserver" depends="compile.module.gitcommitreviewserver.production,compile.module.gitcommitreviewserver.tests" description="Compile module gitCommitReviewServer"/>
+  
+  <target name="compile.module.gitcommitreviewserver.production" depends="register.custom.compilers" description="Compile module gitCommitReviewServer; production classes">
+    <mkdir dir="${gitcommitreviewserver.output.dir}"/>
+    <javac2 destdir="${gitcommitreviewserver.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.gitcommitreviewserver}/javac">
+      <compilerarg line="${compiler.args.gitcommitreviewserver}"/>
+      <bootclasspath refid="gitcommitreviewserver.module.bootclasspath"/>
+      <classpath refid="gitcommitreviewserver.module.production.classpath"/>
+      <src refid="gitcommitreviewserver.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.gitcommitreviewserver"/>
+    </javac2>
+    
+    <copy todir="${gitcommitreviewserver.output.dir}">
+      <fileset dir="${module.gitcommitreviewserver.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.gitcommitreviewserver.basedir}/lib">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.gitcommitreviewserver.tests" depends="register.custom.compilers,compile.module.gitcommitreviewserver.production" description="compile module gitCommitReviewServer; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.gitcommitreviewserver" description="cleanup module">
+    <delete dir="${gitcommitreviewserver.output.dir}"/>
+    <delete dir="${gitcommitreviewserver.testoutput.dir}"/>
+  </target>
+</project>
